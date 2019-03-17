@@ -1,0 +1,83 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" *ngIf="!authService.isLoggedIn()" routerLink="login">SocyleDemo</a>
+            <a class="navbar-brand" *ngIf="authService.isLoggedIn()" routerLink="home">SocyleDemo</a>
+        </div>
+
+
+        <div id="navbar" class="collapse navbar-collapse">
+            
+            <ul class="nav navbar-nav">
+                <li><a routerLink="home" routerLinkActive="active">Protected Home</a></li>
+                <li><a routerLink="about" routerLinkActive="active">About</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="!authService.isLoggedIn()">
+                    <a routerLink="login" routerLinkActive="active">Log In</a>
+                </li>
+
+                <li *ngIf="authService.isSuperAdmin()">
+                    <ul class="menu">
+                        <li>
+                            Admins
+                            <ul>
+                                <li routerLink="api/shop-admins/requests"> New requests</li>
+                                <li routerLink="api/shop-admins"> Admins</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="menu">
+                        <li>
+                            Shops
+                            <ul>
+                                <li routerLink="api/shops"> Add shop</li>
+                                <li routerLink="api/shops/report"> Shops </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li *ngIf="authService.isShopAdmin()">
+                        <a routerLink="api/shops/:id" routerLinkActive="active"> My Shop </a>
+                </li>
+
+                 <li *ngIf="authService.isCustomer()">
+                        <a routerLink="api/shops/report" routerLinkActive="active"> Shops </a>
+                </li>
+
+                <li *ngIf="authService.isLoggedIn()">
+                    <ul class="menu">
+                        <li>
+                            Welcome {{ authService.currentUser.name }}
+                            <ul>
+                                <li routerLink="profile">My Profile</li>
+                                <li routerLink="password">Change Password</li>
+                                <li routerLink="logout">Logout</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; Copyright 2019 | Socyle demo</p>
+    </div>
+</footer>

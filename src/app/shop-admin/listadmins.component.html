@@ -1,0 +1,120 @@
+<div class="container pagecontainer">
+    <div class="page-header">
+        <h1> Shop-admin Reports </h1>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Show report</h3>
+        </div>
+
+        <div class="panel-body">
+            <form [formGroup]="reportForm" (ngSubmit)="getReport(reportForm.value)" class="form-horizontal" novalidate
+                autocomplete="off">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="report" value="ALL_APPROVED" [formControl]="report" [checked]="true">
+                                All
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="report" value="ACTIVATED" [formControl]="report">
+                                Activated
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="report" value="DIS_ACTIVATED" [formControl]="report">
+                                Deactivated
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-3">
+                        <button type="submit" class="btn btn-primary" [disabled]="reportForm.invalid">Show</button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-danger" *ngIf="admins && totalrows < 1">
+        <div class="panel-heading">
+            <h3 class="panel-title">No admins found</h3>
+        </div>
+
+        <div class="panel-body">
+            No results for the selected criteria.
+        </div>
+
+    </div>
+
+
+    <div class="panel panel-default" *ngIf="admins && totalrows >0">
+        <div class="panel-heading">
+            <h3 class="panel-title">shop admins report </h3>
+        </div>
+
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th width="20%">Admin Name</th>
+                            <th width="30%">Description</th>
+                            <th width="10%">Activated</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor='let admin of admins; let adminIndex = index'>
+                            <td>{{ admin.name }}</td>
+                            <td>{{ admin.description}}</td>
+                            <td>{{ admin.activated }}</td>
+                            <td>
+                                <button type="button" class="btn-xs btn-info" aria-label="View" (click)="showAdmin(admin._id)">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" class="btn-xs btn-danger" aria-label="Edit" (click)="editAdminPrivileges(admin._id)">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" class="btn-xs btn-primary" aria-label="Delete" (click)="cofirmAdminDel(expIndex, admin._id)">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div style="text-align:center" *ngIf="admins && totalrows > 10">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li *ngFor="let item of createPager(pgCounter); let idx = index">
+                            <a [ngClass]="{'selected': qpage == idx + 1 }" class="selected" style="cursor:pointer"
+                                (click)="setPage(idx + 1)">{{ idx + 1 }}</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
